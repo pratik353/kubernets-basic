@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  labels: ## label need to be consistent everywhere
+    app: webapp
+spec:
+  replicas: 1   ## replicas of your app
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers: 
+      - name: mongo-express
+        image: mongo-express:latest
+        ports:
+        - containerPort: 8081  ## container port
+        env:
+        - name: ME_CONFIG_MONGODB_SERVER         
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config 
+              key: mongo-url
+        - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+          valueFrom:
+            secretKeyRef: ## kind ref where we have secrets
+              name: mongo-secret ## file which contains secrets metadata name  
+              key: mongo-user  ## key name which present in that file 
+        - name: ME_CONFIG_MONGODB_ADMINPASSWORD 
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret ## file which contains secrets metadata name 
+              key: mongo-password
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service
+spec:
+  type: NodePort
+  selector:
+    app: webapp ## it attached to deployment based on selector which we set in deployment file
+  ports:
+  - protocol: TCP
+    port: 8081
+    targetPort: 8081 ## it comes from containerPort in deployment file
+    nodePort: 30100

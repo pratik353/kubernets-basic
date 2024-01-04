@@ -1,0 +1,56 @@
+# Core terms
+1. Control panel ---> it's control plane which help us to interact with worker nodes
+2. worker nodes ---> it contains all deployment and services e.g. mongo : deployment and exposing mongo url(services) , web-app :  deployment and exposing web-app url(services)
+3. Kubectl ( kubernets command line tool ) --> used to work with control plane
+4. secretes ---> these are global secret variables which you can use anywhere
+5. Config ----> these are global variables which you can use anywhere eg. dbURL
+
+6. minikubes ---> minicubes contains all ( control plane and worker nodes ) ---> it's an environment separate from kubectl
+
+7. nodePort ---> node port is url which we want to expose to external users e.g. webapp-url
+
+
+
+to perform all fo these we need to install kubernets and minikubes
+
+## installation on windows
+1. with chocolaty :
+    install chocolaty
+
+    install kubectl :- 
+    run command --> choco install kubernetes-cli  // It will install kubectl on machine
+
+    install minikube :- 
+    run in powershell --> choco install minikube
+
+
+## secret:-
+    keep your all secrets are separate e.g. mongo-secrets.yaml, web-app secrets.yaml
+
+
+## config:- 
+    configMaps :- A ConfigMap is an API object used to store non-confidential data in key-value pairs
+
+## deployments:-
+    You describe a desired state in a Deployment, and the Deployment Controller changes the actual state to the desired state at a controlled rate.
+    You just tell this file how many pods and worker nodes you need. And it will set them
+
+## service:-
+    In Kubernetes, a Service is a method for exposing a network application that is running as one or more Pods in your cluster.
+
+
+
+## COMMANDS OF Kubectl
+
+1. kubectl get pod --> get running pods
+2. kubectl apply -f <FILE_NAME> ---> create instance in kubernets environment
+3. kubectl get secret --> gives you all secrets that are created
+4. kubectl get ConfigMap  --> gives all configMap which are created
+5. kubectl get svc  --> gives you all services 
+6. minikube ip   --> gives you exact IP where this minikube is running --> used to listen our app
+7. minikube service <SERVICE_NAME>  ---> gives ypu webapp service ip where it running
+
+8. kubectl delete deployment --all    --> remove all deployment which are created in pods
+9. kubectl delete service --all    --> remove all service which are created in pods
+10. kubectl delete secret --all    --> remove all secret which are created in pods
+11. kubectl delete configMap --all    --> remove all configMap which are created in pods
